@@ -21,6 +21,7 @@ const playAgainBtn = document.querySelector('.play-again')
 // Equations
 let questionAmount = 0
 let equationsArray = []
+let playerGuessArray = []
 
 // Game Page
 let firstNumber = 0
@@ -31,6 +32,21 @@ const wrongFormat = []
 // Time
 
 // Scroll
+let valueY = 0
+
+// Scroll, Store user selection in playerGuessArray
+
+// Scroll, Store user selection in playerGuessArray
+function select(guessedTrue) {
+  console.log('player guess array:', playerGuessArray)
+  // Scroll 80 more pixels
+  valueY += 80
+  itemContainer.scroll(0, valueY)
+  // Add player guess to array
+  return guessedTrue
+    ? playerGuessArray.push('true')
+    : playerGuessArray.push('false')
+}
 
 // Displays Game Page
 function showGamePage() {
@@ -75,8 +91,6 @@ function createEquations() {
     equationsArray.push(equationObject)
   }
   shuffle(equationsArray)
-  console.log('equations array:', equationsArray)
-  equationstoDOM()
 }
 
 // Add Equations to DOM
@@ -96,25 +110,27 @@ function equationstoDOM() {
 }
 
 // Dynamically adding correct/incorrect equations
-// function populateGamePage() {
-//   // Reset DOM, Set Blank Space Above
-//   itemContainer.textContent = '';
-//   // Spacer
-//   const topSpacer = document.createElement('div');
-//   topSpacer.classList.add('height-240');
-//   // Selected Item
-//   const selectedItem = document.createElement('div');
-//   selectedItem.classList.add('selected-item');
-//   // Append
-//   itemContainer.append(topSpacer, selectedItem);
+function populateGamePage() {
+  // Reset DOM, Set Blank Space Above
+  itemContainer.textContent = ''
+  // Spacer
+  const topSpacer = document.createElement('div')
+  topSpacer.classList.add('height-240')
+  // Selected Item
+  const selectedItem = document.createElement('div')
+  selectedItem.classList.add('selected-item')
+  // Append
+  itemContainer.append(topSpacer, selectedItem)
 
-//   // Create Equations, Build Elements in DOM
+  // Create Equations, Build Elements in DOM
+  createEquations()
+  equationstoDOM()
 
-//   // Set Blank Space Below
-//   const bottomSpacer = document.createElement('div');
-//   bottomSpacer.classList.add('height-500');
-//   itemContainer.appendChild(bottomSpacer);
-// }
+  // Set Blank Space Below
+  const bottomSpacer = document.createElement('div')
+  bottomSpacer.classList.add('height-500')
+  itemContainer.appendChild(bottomSpacer)
+}
 
 //  Displays 3, 2, 1 GO!
 function countdownStart() {
@@ -135,7 +151,7 @@ function showCountdown() {
   countdownPage.hidden = false
   splashPage.hidden = true
   countdownStart()
-  createEquations()
+  populateGamePage()
   setTimeout(showGamePage, 400)
 }
 
